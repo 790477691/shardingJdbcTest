@@ -1,0 +1,96 @@
+dataSources:
+  oracleSource1:
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    jdbcUrl: jdbc:oracle:thin:@219.235.95.17:9521:road
+    username: road
+    password: road
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+    minPoolSize: 1
+  oracleSource2:
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    jdbcUrl: jdbc:oracle:thin:@219.235.95.17:9521:road1
+    username: road1
+    password: road1
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+    minPoolSize: 1
+  oracleSource3:
+    dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    jdbcUrl: jdbc:oracle:thin:@219.235.95.17:9521:road2
+    username: road2
+    password: road2
+    connectionTimeoutMilliseconds: 30000
+    idleTimeoutMilliseconds: 60000
+    maxLifetimeMilliseconds: 1800000
+    maxPoolSize: 50
+    minPoolSize: 1
+
+rules:
+  - !SHARDING
+    tables:
+      MJM_GPS_RECORD:
+        actualDataNodes: oracleSource${1..3}.MJM_GPS_RECORD
+        databaseStrategy:
+          standard:
+            shardingColumn: TELEPHONE
+            shardingAlgorithmName: hint_test
+      MJM_JS_ATTACHMENT:
+        actualDataNodes: oracleSource${1..3}.MJM_JS_ATTACHMENT
+        databaseStrategy:
+          standard:
+            shardingColumn: SIM_NUMBER
+            shardingAlgorithmName: hint_test
+      MJM_JS_BLIND_AREA:
+        actualDataNodes: oracleSource${1..3}.MJM_JS_BLIND_AREA
+        databaseStrategy:
+          standard:
+            shardingColumn: SIM_NUMBER
+            shardingAlgorithmName: hint_test
+      MJM_JS_DRIVER_STATUS:
+        actualDataNodes: oracleSource${1..3}.MJM_JS_DRIVER_STATUS
+        databaseStrategy:
+          standard:
+            shardingColumn: SIM_NUMBER
+            shardingAlgorithmName: hint_test
+      MJM_JS_DRIVING_ASS:
+        actualDataNodes: oracleSource${1..3}.MJM_JS_DRIVING_ASS
+        databaseStrategy:
+          standard:
+            shardingColumn: SIM_NUMBER
+            shardingAlgorithmName: hint_test
+      MJM_WARNING:
+        actualDataNodes: oracleSource${1..3}.MJM_WARNING
+        databaseStrategy:
+          standard:
+            shardingColumn: SIM_NUMBER
+            shardingAlgorithmName: hint_test
+    bindingTables:
+      - MJM_GPS_RECORD,MJM_JS_ATTACHMENT,MJM_JS_BLIND_AREA,MJM_JS_DRIVER_STATUS,MJM_JS_DRIVING_ASS,MJM_WARNING
+    broadcastTables:
+      - MJM_REPORT_LAST_POSITION,MJM_8702,T_SERVER_DB,T_GPS_RECORD_LOG_JOB,MJM_PICTURE_MATCH
+
+    #    defaultDatabaseStrategy:
+    #      hint:
+    #        shardingColumn:
+    #        shardingAlgorithmName: hint_test
+    #    defaultTableStrategy:
+    #      none:
+
+    shardingAlgorithms:
+      hint_test:
+        type: HINT_TEST
+props:
+  max-connections-size-per-query: 1
+  kernel-executor-size: 16  # Infinite by default.
+  proxy-frontend-flush-threshold: 128  # The default value is 128.
+  proxy-hint-enabled: true
+  sql-show: true
+  check-table-metadata-enabled: false
