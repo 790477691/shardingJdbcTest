@@ -1,10 +1,16 @@
+import org.apache.shardingsphere.driver.api.yaml.YamlShardingSphereDataSourceFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
+import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import static org.springframework.util.ResourceUtils.getFile;
 
 /**
  * @author xinzhi liu
@@ -20,9 +26,15 @@ public class Test {
 //        System.out.println(conn);
 //    }
 
+//    public static void main(String[] args) throws IOException, SQLException {
+//        DataSource dataSource = YamlShardingSphereDataSourceFactory.createDataSource(getFile("E:\\project\\git\\shardingjdbcspring\\src\\main\\resources\\scratch.yaml"));
+//        dataSource.getConnection();
+//        System.out.println(dataSource);
+//    }
+
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-datasource.xml");
-        SimpleDriverDataSource oracleSource = (SimpleDriverDataSource)context.getBean("oracleSource");
+        DataSource oracleSource = (DataSource)context.getBean("oracleSource");
         try {
             oracleSource.getConnection();
         } catch (SQLException e) {

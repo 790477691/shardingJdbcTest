@@ -1,8 +1,9 @@
+databaseName: oracleSource
 dataSources:
   oracleSource1:
     dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
     driverClassName: oracle.jdbc.driver.OracleDriver
-    jdbcUrl: jdbc:oracle:thin:@111.111.11.11:1111:road
+    jdbcUrl: jdbc:oracle:thin:@****:***:road
     username: 111
     password: 111
     connectionTimeoutMilliseconds: 30000
@@ -13,7 +14,7 @@ dataSources:
   oracleSource2:
     dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
     driverClassName: oracle.jdbc.driver.OracleDriver
-    jdbcUrl: jdbc:oracle:thin:@111.111.11.11:1111:road1
+    jdbcUrl: jdbc:oracle:thin:@****:***:road1
     username: 111
     password: 111
     connectionTimeoutMilliseconds: 30000
@@ -24,7 +25,7 @@ dataSources:
   oracleSource3:
     dataSourceClassName: com.alibaba.druid.pool.DruidDataSource
     driverClassName: oracle.jdbc.driver.OracleDriver
-    jdbcUrl: jdbc:oracle:thin:@111.111.11.11:1111:road2
+    jdbcUrl: jdbc:oracle:thin:@****:***:road2
     username: 111
     password: 111
     connectionTimeoutMilliseconds: 30000
@@ -32,9 +33,7 @@ dataSources:
     maxLifetimeMilliseconds: 1800000
     maxPoolSize: 50
     minPoolSize: 1
-
 rules:
-  - !SHARDING
     tables:
       MJM_GPS_RECORD:
         actualDataNodes: oracleSource${1..3}.MJM_GPS_RECORD
@@ -72,18 +71,8 @@ rules:
           standard:
             shardingColumn: SIM_NUMBER
             shardingAlgorithmName: hint_test
-    bindingTables:
-      - MJM_GPS_RECORD,MJM_JS_ATTACHMENT,MJM_JS_BLIND_AREA,MJM_JS_DRIVER_STATUS,MJM_JS_DRIVING_ASS,MJM_WARNING
-    broadcastTables:
-      - MJM_REPORT_LAST_POSITION,MJM_8702,T_SERVER_DB,T_GPS_RECORD_LOG_JOB,MJM_PICTURE_MATCH
-
-#    defaultDatabaseStrategy:
-#      hint:
-#        shardingColumn:
-#        shardingAlgorithmName: hint_test
-#    defaultTableStrategy:
-#      none:
-
+    bindingTables: MJM_GPS_RECORD,MJM_JS_ATTACHMENT,MJM_JS_BLIND_AREA,MJM_JS_DRIVER_STATUS,MJM_JS_DRIVING_ASS,MJM_WARNING
+    broadcastTables: MJM_REPORT_LAST_POSITION,MJM_8702,T_SERVER_DB,T_GPS_RECORD_LOG_JOB,MJM_PICTURE_MATCH
     shardingAlgorithms:
       hint_test:
         type: HINT_TEST

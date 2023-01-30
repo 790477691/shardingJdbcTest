@@ -19,15 +19,12 @@
         <property name="logSlowSql" value="true"/>
     </bean>
 
-
     <bean id="dataSource" class="DynamicDataSource" >
         <property name="targetDataSources">
             <map>
                 <entry key="mysqlSource" value-ref="mysqlSource"/>
                 <entry key="mysqlSourceBj" value-ref="mysqlSourceBj"/>
                 <entry key="oracleSource" value-ref="oracleSource"/>
-<!--                <entry key="oracleSource" value-ref="shardingDataSource"/>-->
-<!--                <entry key="h2Source" value-ref="h2Source" />-->
             </map>
         </property>
         <property name="defaultTargetDataSource" ref="mysqlSource"/>
@@ -80,34 +77,11 @@
         <property name="password" value="${jdbc.password1}"/>
         <property name="validationQuery" value="select 1"/>
     </bean>
-    <bean id="oracleSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-        <property name="driverClass" value="org.apache.shardingsphere.driver.ShardingSphereDriver"/>
+    <bean id="oracleSource" parent="parentSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="org.apache.shardingsphere.driver.ShardingSphereDriver"/>
         <property name="url" value="jdbc:shardingsphere:classpath:scratch.yaml" />
     </bean>
 
 
-<!--    <bean id="oracleSource1" parent="parentSource" init-method="init" destroy-method="close">-->
-<!--        <property name="driverClassName" value="${jdbc.orcl1.driverClassName}"/>-->
-<!--        <property name="url" value="${jdbc.orcl1.url}"/>-->
-<!--        <property name="username" value="${jdbc.orcl1.username}"/>-->
-<!--        <property name="password" value="${jdbc.orcl1.password}"/>-->
-<!--        <property name="validationQuery" value="select 1 from dual"/>-->
-<!--    </bean>-->
-
-<!--    <bean id="oracleSource2" parent="parentSource" init-method="init" destroy-method="close">-->
-<!--        <property name="driverClassName" value="${jdbc.orcl2.driverClassName}"/>-->
-<!--        <property name="url" value="${jdbc.orcl2.url}"/>-->
-<!--        <property name="username" value="${jdbc.orcl2.username}"/>-->
-<!--        <property name="password" value="${jdbc.orcl2.password}"/>-->
-<!--        <property name="validationQuery" value="select 1 from dual"/>-->
-<!--    </bean>-->
-
-<!--    <bean id="oracleSource3" parent="parentSource" init-method="init" destroy-method="close">-->
-<!--        <property name="driverClassName" value="${jdbc.orcl3.driverClassName}"/>-->
-<!--        <property name="url" value="${jdbc.orcl3.url}"/>-->
-<!--        <property name="username" value="${jdbc.orcl3.username}"/>-->
-<!--        <property name="password" value="${jdbc.orcl3.password}"/>-->
-<!--        <property name="validationQuery" value="select 1 from dual"/>-->
-<!--    </bean>-->
 
 </beans>
